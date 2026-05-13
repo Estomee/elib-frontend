@@ -24,7 +24,11 @@ AppSettings::AppSettings(QObject *parent)
         if (!saved.isEmpty()) {
             m_serverUrl = saved;
         } else {
+#ifdef QT_DEBUG
             m_serverUrl = QStringLiteral("http://localhost:5099/graphql");
+#else
+            m_serverUrl = QStringLiteral("https://elib-server.onrender.com/graphql");
+#endif
         }
     }
 
