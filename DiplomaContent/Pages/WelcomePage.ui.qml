@@ -14,19 +14,38 @@ BasePage {
     LoginPage { id: loginPage }
 
     property bool _pendingAutoLogin: false
+    property int  _autoLoginAttempt: 0
 
     onVisibleChanged: {
         if (visible) _pendingAutoLogin = false
     }
 
-    Component.onCompleted: {
-        if (TokenManager.hasValidToken() && TokenManager.rememberMe) {
-            _pendingAutoLogin = true
-            loginPage.autoLogin(function(isNetworkErr) {
+    // Delayed retry for server cold-start: silently retries once before showing the error banner.
+    Timer {
+        id: autoLoginRetryTimer
+        interval: 10000
+        repeat: false
+        onTriggered: welcomePage._doAutoLogin()
+    }
+
+    function _doAutoLogin() {
+        loginPage.autoLogin(function(isNetworkErr) {
+            if (isNetworkErr && _autoLoginAttempt < 1) {
+                _autoLoginAttempt++
+                autoLoginRetryTimer.start()
+            } else {
                 welcomePage._pendingAutoLogin = false
                 if (isNetworkErr)
                     offlineBanner.show("Сервер недоступен. Войдите повторно, когда соединение восстановится.")
-            })
+            }
+        })
+    }
+
+    Component.onCompleted: {
+        if (TokenManager.hasValidToken() && TokenManager.rememberMe) {
+            _pendingAutoLogin = true
+            _autoLoginAttempt = 0
+            _doAutoLogin()
         }
     }
 
@@ -60,7 +79,9 @@ BasePage {
         HeadingText { anchors.horizontalCenter: parent.horizontalCenter; text: "Elib"; size: 48 }
         Text {
             anchors.horizontalCenter: parent.horizontalCenter
-            text: "Выполняется вход..."
+            text: welcomePage._autoLoginAttempt > 0
+                  ? "Соединение с сервером..."
+                  : "Выполняется вход..."
             font.family: "Montserrat"; font.pixelSize: 16; color: "#8EB69B"
         }
     }
@@ -311,11 +332,8 @@ BasePage {
                     onClicked: {
                         offlineBanner.visible = false
                         welcomePage._pendingAutoLogin = true
-                        loginPage.autoLogin(function(isNetworkErr) {
-                            welcomePage._pendingAutoLogin = false
-                            if (isNetworkErr)
-                                offlineBanner.show("Сервер недоступен. Попробуйте позже.")
-                        })
+                        welcomePage._autoLoginAttempt = 0
+                        welcomePage._doAutoLogin()
                     }
                 }
                 MainButton {

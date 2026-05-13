@@ -9,6 +9,25 @@ TokenManager::TokenManager(QObject *parent)
     , m_settings(QStringLiteral("ELib"), QStringLiteral("Diploma"))
 {
     s_instance = this;
+
+    // On fresh install the MSI writes a unique ProductCode to HKLM\Software\ELib\InstallId.
+    // Compare it against the last seen value in HKCU to detect a new installation and clear
+    // stale auth tokens so the user is not greeted with a spurious "session expired" error.
+    QSettings hklm(QStringLiteral("HKEY_LOCAL_MACHINE\\Software\\ELib"),
+                   QSettings::NativeFormat);
+    const QString installId = hklm.value(QStringLiteral("InstallId")).toString();
+    const QString seenId    = m_settings.value(QStringLiteral("meta/install_id")).toString();
+
+    if (!installId.isEmpty() && installId != seenId) {
+        m_settings.remove(QStringLiteral("auth/access_token"));
+        m_settings.remove(QStringLiteral("auth/refresh_token"));
+        m_settings.remove(QStringLiteral("auth/user_id"));
+        m_settings.remove(QStringLiteral("auth/is_employee"));
+        m_settings.remove(QStringLiteral("auth/first_name"));
+        m_settings.remove(QStringLiteral("auth/last_name"));
+        m_settings.remove(QStringLiteral("auth/email"));
+        m_settings.setValue(QStringLiteral("meta/install_id"), installId);
+    }
 }
 
 TokenManager *TokenManager::create(QQmlEngine *engine, QJSEngine *)
