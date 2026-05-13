@@ -74,6 +74,7 @@ QtObject {
                         employee
                         registration_date
                         last_login
+                        books_count
                     }
                     total_count
                     page_info { has_next_page end_cursor }

@@ -12,9 +12,8 @@ CMakeUserPresets.json
 cmake_install.cmake
 Makefile
 .cmake/
-*.pro.user
+*.user
 *.pro.user.*
-*.qbs.user
 *.qbs.user.*
 *.qmlproject.user
 *.qmlproject.qtds

@@ -54,10 +54,17 @@ BasePage {
 
     Timer {
         id: statsRetryTimer
-        interval: 600
-        repeat: false
+        interval: 800
+        repeat: true
+        property int _attempts: 0
         onTriggered: {
-            if (TokenManager.hasValidToken() && adminPanelPage._statBooks === 0)
+            if (_statBooks > 0 || _attempts >= 8) {
+                repeat = false
+                _attempts = 0
+                return
+            }
+            _attempts++
+            if (TokenManager.hasValidToken())
                 adminPanelPage._loadStats()
         }
     }

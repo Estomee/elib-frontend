@@ -47,7 +47,7 @@ QtObject {
                         regDate:   _formatMoscow(u.registration_date),
                         role:      u.employee   ? "admin" : "reader",
                         userType:  u.employee   ? "Сотрудник" : "Пользователь",
-                        booksCount: 0
+                        booksCount: u.books_count || 0
                     })
                 }
                 users     = result
