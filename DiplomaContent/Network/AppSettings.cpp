@@ -76,10 +76,15 @@ QString AppSettings::storageBaseUrl() const
     return m_storageBaseUrl;
 }
 
-QString AppSettings::healthUrl() const
+QString AppSettings::baseUrl() const
 {
     QString base = m_serverUrl;
     if (base.endsWith(QStringLiteral("/graphql")))
         base.chop(8);
-    return base + QStringLiteral("/health");
+    return base;
+}
+
+QString AppSettings::healthUrl() const
+{
+    return baseUrl() + QStringLiteral("/health");
 }

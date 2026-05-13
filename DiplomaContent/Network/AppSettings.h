@@ -14,6 +14,7 @@ class AppSettings : public QObject
     QML_ELEMENT
 
     Q_PROPERTY(QString serverUrl      READ serverUrl      CONSTANT)
+    Q_PROPERTY(QString baseUrl        READ baseUrl        CONSTANT)
     Q_PROPERTY(QString healthUrl      READ healthUrl      CONSTANT)
     Q_PROPERTY(QString deviceInfo     READ deviceInfo     CONSTANT)
     Q_PROPERTY(QString storageBaseUrl READ storageBaseUrl CONSTANT)
@@ -25,6 +26,7 @@ public:
     static AppSettings *instance();
 
     QString serverUrl()      const;
+    QString baseUrl()        const;
     QString healthUrl()      const;
     QString deviceInfo()     const;
     QString storageBaseUrl() const;

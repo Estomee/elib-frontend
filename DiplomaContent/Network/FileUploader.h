@@ -37,10 +37,20 @@ public:
                                   const QJSValue &onSuccess,
                                   const QJSValue &onError);
 
+    Q_INVOKABLE void downloadFileAuth(const QString &url,
+                                      const QString &localPath,
+                                      const QString &token,
+                                      const QJSValue &onSuccess,
+                                      const QJSValue &onError);
+
     Q_INVOKABLE QString appCacheDir();
 
 private:
     static FileUploader *s_instance;
     QNetworkAccessManager *m_nam;
     QJSEngine             *m_jsEngine;
+
+    void _downloadImpl(const QString &url, const QString &localPath,
+                       const QString &token,
+                       const QJSValue &onSuccess, const QJSValue &onError);
 };

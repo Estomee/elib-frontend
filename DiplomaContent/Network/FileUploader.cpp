@@ -77,10 +77,28 @@ QString FileUploader::appCacheDir()
 void FileUploader::downloadFile(const QString &url, const QString &localPath,
                                  const QJSValue &onSuccess, const QJSValue &onError)
 {
+    _downloadImpl(url, localPath, QString{}, onSuccess, onError);
+}
+
+void FileUploader::downloadFileAuth(const QString &url, const QString &localPath,
+                                     const QString &token,
+                                     const QJSValue &onSuccess, const QJSValue &onError)
+{
+    _downloadImpl(url, localPath, token, onSuccess, onError);
+}
+
+void FileUploader::_downloadImpl(const QString &url, const QString &localPath,
+                                  const QString &token,
+                                  const QJSValue &onSuccess, const QJSValue &onError)
+{
     QNetworkRequest request{QUrl(url)};
     request.setTransferTimeout(120000);
     request.setAttribute(QNetworkRequest::RedirectPolicyAttribute,
                          QNetworkRequest::NoLessSafeRedirectPolicy);
+
+    if (!token.isEmpty())
+        request.setRawHeader(QByteArrayLiteral("Authorization"),
+                             QByteArrayLiteral("Bearer ") + token.toUtf8());
 
     QNetworkReply *reply = m_nam->get(request);
     QJSValue successCb = onSuccess;

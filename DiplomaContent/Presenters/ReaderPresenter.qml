@@ -21,14 +21,30 @@ QtObject {
     property int    _userBookId:    0
 
     function openBook(bookId, userBookId, startPage) {
-        if (!HealthService.isStorageReady) {
-            bookLoadFailed("Файловое хранилище временно недоступно. Чтение книг из библиотеки недоступно.")
+        isLoading      = true
+        _userBookId    = userBookId || 0
+        _localFilePath = ""
+        currentPage    = startPage || 1
+
+        var cacheDir = FileUploader.appCacheDir()
+        var epubPath = cacheDir + "/book_" + bookId + ".epub"
+        var pdfPath  = cacheDir + "/book_" + bookId + ".pdf"
+
+        // Serve from local cache when available — no network needed.
+        if (FileUploader.fileSize(epubPath) > 0) {
+            fileType  = "epub"
+            isLoading = false
+            bookFileReady("file:///" + epubPath.replace(/\\/g, "/"), "epub")
             return
         }
-        isLoading    = true
-        _userBookId  = userBookId || 0
-        _localFilePath = ""
+        if (FileUploader.fileSize(pdfPath) > 0) {
+            fileType  = "pdf"
+            isLoading = false
+            bookFileReady("file:///" + pdfPath.replace(/\\/g, "/"), "pdf")
+            return
+        }
 
+        // Not cached — ask server for the proxy URL (includes ?type=pdf|epub for type detection).
         BookService.getBookFileUrl(bookId,
             function(url) {
                 if (!url || url === "") {
@@ -36,14 +52,17 @@ QtObject {
                     bookLoadFailed("Файл книги недоступен")
                     return
                 }
-                var ext = url.split("?")[0].split(".").pop().toLowerCase()
-                fileType    = (ext === "epub") ? "epub" : "pdf"
-                currentPage = startPage || 1
 
-                var cacheDir  = FileUploader.appCacheDir()
-                var ext2      = fileType === "epub" ? "epub" : "pdf"
-                var localPath = cacheDir + "/book_" + bookId + "." + ext2
-                FileUploader.downloadFile(url, localPath,
+                // Extract type from ?type= query param; fall back to URL extension.
+                var typeMatch = url.match(/[?&]type=([^&]+)/)
+                var ext       = typeMatch ? typeMatch[1].toLowerCase() : url.split("?")[0].split(".").pop().toLowerCase()
+                fileType      = (ext === "epub") ? "epub" : "pdf"
+
+                var localPath = fileType === "epub" ? epubPath : pdfPath
+                var downloadUrl = url.split("?")[0]  // strip ?type= param before download
+
+                // Download through server proxy with JWT auth — no direct Yandex Cloud needed.
+                FileUploader.downloadFileAuth(downloadUrl, localPath, TokenManager.accessToken,
                     function() {
                         isLoading = false
                         bookFileReady("file:///" + localPath.replace(/\\/g, "/"), fileType)
