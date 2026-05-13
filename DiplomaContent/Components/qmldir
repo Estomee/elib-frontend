@@ -1,0 +1,8 @@
+module DiplomaContent.Components
+FilterPanel 1.0 FilterPanel.qml
+ConfirmDialog 1.0 ConfirmDialog.qml
+AdminSideBar 1.0 AdminSideBar.qml
+AuthorChipsSelector 1.0 AuthorChipsSelector.qml
+SingleChipSelector  1.0 SingleChipSelector.qml
+GenreChipsInput         1.0 GenreChipsInput.qml
+PublisherChipSelector   1.0 PublisherChipSelector.qml

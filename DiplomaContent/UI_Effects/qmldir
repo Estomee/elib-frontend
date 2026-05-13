@@ -1,0 +1,2 @@
+module DiplomaEffects.UI_Effects
+GlowEffect 1.0 GlowEffect.qml

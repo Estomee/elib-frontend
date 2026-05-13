@@ -1,0 +1,94 @@
+# ── Build output ──────────────────────────────────────────────────────────────
+build/
+out/
+installer/out/
+installer/AppFiles.wxs
+*.msi
+
+# ── Qt / CMake generated ───────────────────────────────────────────────────────
+CMakeCache.txt
+CMakeFiles/
+CMakeUserPresets.json
+cmake_install.cmake
+Makefile
+.cmake/
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+*.qmlproject.user
+*.qmlproject.qtds
+*.qmlc
+*.jsc
+qtquickcontrols2.conf.user
+
+# ── Compiled binaries ─────────────────────────────────────────────────────────
+*.o
+*.obj
+*.a
+*.lib
+*.dll
+*.exe
+*.so
+*.dylib
+*.pdb
+*.ilk
+*.exp
+
+# ── Qt deployment folder (windeployqt output) ─────────────────────────────────
+deploy/
+
+# ── IDE ───────────────────────────────────────────────────────────────────────
+.vs/
+.vscode/
+.idea/
+*.suo
+*.userosscache
+*.sln.docview
+*.iml
+*.orig
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+Thumbs.db
+ehthumbs.db
+.DS_Store
+desktop.ini
+$RECYCLE.BIN/
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+*.log
+*.log.*
+
+# ── Secrets / local user config ───────────────────────────────────────────────
+secrets.json
+.env
+.env.*
+*.local
+config.local.*
+appsettings.Local.*
+appsettings.Development.*
+UserSecrets/
+
+# ── Claude Code / AI tooling ──────────────────────────────────────────────────
+.claude/
+CLAUDE.md
+CLAUDE.local.md
+*.claude
+memory/
+.cursorrules
+.aider*
+
+# ── Documentation ─────────────────────────────────────────
+*.md
+!README.md
+
+# ── Temp / misc ───────────────────────────────────────────────────────────────
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# ── Etc ───────────────────────────────────────────────────────────────
+/deploy
+/installer
+~$*

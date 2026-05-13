@@ -1,0 +1,8 @@
+module DiplomaContent.Api
+singleton AuthService 1.0 AuthService.qml
+singleton BookService 1.0 BookService.qml
+singleton UserService 1.0 UserService.qml
+singleton LibraryService 1.0 LibraryService.qml
+singleton AdminService 1.0 AdminService.qml
+singleton CatalogService 1.0 CatalogService.qml
+singleton HealthService 1.0 HealthService.qml

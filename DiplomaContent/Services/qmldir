@@ -1,0 +1,2 @@
+module DiplomaContent.Services
+singleton NotificationManager 1.0 NotificationManager.qml

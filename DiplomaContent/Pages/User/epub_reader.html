@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EPUB Reader</title>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/epubjs@0.3.93/dist/epub.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; background: #0d1a14; overflow: hidden; }
+    #viewer { width: 100%; height: 100%; background: #0d1a14; }
+    #viewer iframe { background: #0d1a14 !important; }
+    #error-msg {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      color: #8EB69B;
+      font-family: Georgia, serif;
+      font-size: 16px;
+      text-align: center;
+      padding: 24px;
+      background: #163832;
+      border-radius: 12px;
+      border: 1px solid #235347;
+      max-width: 420px;
+    }
+    #loading-msg {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      color: #8EB69B;
+      font-family: Georgia, serif;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div id="loading-msg">Загрузка книги...</div>
+  <div id="viewer"></div>
+  <div id="error-msg"></div>
+
+  <script>
+    var _book = null;
+    var _rendition = null;
+
+    function showError(msg) {
+      document.getElementById('loading-msg').style.display = 'none';
+      var el = document.getElementById('error-msg');
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+
+    function openEpub(url, startSection) {
+      document.getElementById('loading-msg').style.display = 'block';
+      document.getElementById('error-msg').style.display = 'none';
+
+      if (_book) {
+        try { _book.destroy(); } catch(e) {}
+        _book = null;
+        _rendition = null;
+      }
+
+      if (!url || url === '') {
+        showError('Файл не указан.');
+        return;
+      }
+
+      try {
+        _book = ePub(url);
+
+        _book.ready.catch(function(err) {
+          showError('Не удалось открыть книгу.\n' + (err.message || err));
+        });
+
+        _rendition = _book.renderTo('viewer', {
+          width: '100%',
+          height: '100%',
+          spread: 'none',
+          allowScriptedContent: true
+        });
+
+        _rendition.themes.default({
+          body: {
+            background: '#0d1a14 !important',
+            color: '#DAF1DE !important',
+            'font-family': 'Georgia, serif !important',
+            'line-height': '1.7 !important',
+            padding: '0 32px !important'
+          },
+          'a': { color: '#8EB69B !important' }
+        });
+
+        _rendition.on('relocated', function(location) {
+          var pct = (location && location.start && location.start.percentage != null)
+                    ? location.start.percentage : 0;
+          var idx = (location && location.start && location.start.index != null)
+                    ? location.start.index : 0;
+          var spineLen = (_book && _book.spine) ? _book.spine.length : 0;
+          console.log('EPUB_LOC:' + idx + ':' + pct.toFixed(4) + ':' + spineLen);
+        });
+
+        // Если есть сохранённая позиция — открываем сразу нужную секцию (мгновенно)
+        var target = (startSection >= 0) ? startSection : undefined;
+        _rendition.display(target).then(function() {
+          document.getElementById('loading-msg').style.display = 'none';
+        }).catch(function(err) {
+          showError('Ошибка отображения: ' + (err.message || err));
+        });
+
+      } catch(e) {
+        showError('Ошибка инициализации: ' + (e.message || e));
+      }
+    }
+
+    function nextSection() { if (_rendition) _rendition.next(); }
+    function prevSection() { if (_rendition) _rendition.prev(); }
+
+    window.addEventListener('load', function() {
+      if (typeof ePub === 'undefined') {
+        showError('Не удалось загрузить epub.js.\nПроверьте подключение к интернету.');
+      }
+    });
+  </script>
+</body>
+</html>

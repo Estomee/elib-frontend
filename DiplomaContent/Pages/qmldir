@@ -1,0 +1,18 @@
+module DiplomaContent.Pages
+LoginPage 1.0 LoginPage.ui.qml
+WelcomePage 1.0 WelcomePage.ui.qml
+RecoverPassPage 1.0 RecoverPassPage.ui.qml
+MainPage 1.0 MainPage.ui.qml
+BasePage 1.0 BasePage.qml
+CatalogPage 1.0 User/CatalogPage.ui.qml
+MyLibraryPage 1.0 User/MyLibraryPage.ui.qml
+ReaderPage 1.0 User/ReaderPage.ui.qml
+ProfilePage 1.0 User/ProfilePage.ui.qml
+AdminPanelPage 1.0 Admin/AdminPanelPage.qml
+ManageBooksView 1.0 Admin/ManageBooksView.qml
+ManageUsersView 1.0 Admin/ManageUsersView.qml
+UploadBooksView 1.0 Admin/UploadBooksView.qml
+SystemLogsView 1.0 Admin/SystemLogsView.qml
+ManageEmployeesView 1.0 Admin/ManageEmployeesView.qml
+ManageReferenceView 1.0 Admin/ManageReferenceView.qml
+

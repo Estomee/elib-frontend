@@ -1,0 +1,154 @@
+import QmlProject
+
+Project {
+    mainFile: "DiplomaContent/App.qml"
+    mainUiFile: "DiplomaContent/WelcomePage.ui.qml"
+
+    /* Include .qml, .js, and image files from current directory and subdirectories */
+    QmlFiles {
+        directory: "Diploma"
+    }
+
+    QmlFiles {
+        directory: "DiplomaContent"
+    }
+
+    QmlFiles {
+        directory: "DiplomaContent/UI_Elements"
+    }
+
+    QmlFiles {
+        directory: "DiplomaContent/Presenters"
+    }
+
+    QmlFiles {
+        directory: "DiplomaContent/Models"
+    }
+
+    QmlFiles {
+        directory: "DiplomaContent/Pages/Public"
+    }
+
+    QmlFiles {
+        directory: "DiplomaContent/Pages/User"
+    }
+
+    QmlFiles {
+        directory: "DiplomaContent/Pages/Admin"
+    }
+
+    QmlFiles {
+        directory: "DiplomaContent/Components"
+    }
+
+    QmlFiles {
+        directory: "DiplomaContent/Services"
+    }
+
+    QmlFiles {
+        directory: "Generated"
+    }
+
+    JavaScriptFiles {
+        directory: "Diploma"
+    }
+
+    JavaScriptFiles {
+        directory: "DiplomaContent"
+    }
+
+    ImageFiles {
+        directory: "DiplomaContent"
+    }
+
+    ImageFiles {
+        directory: "Generated"
+    }
+
+    Files {
+        filter: "*.conf"
+        files: ["qtquickcontrols2.conf"]
+    }
+
+    Files {
+        filter: "qmldir"
+        directory: "."
+    }
+
+    Files {
+        filter: "*.ttf;*.otf"
+    }
+
+    Files {
+        filter: "*.wav;*.mp3"
+    }
+
+    Files {
+        filter: "*.mp4"
+    }
+
+    Files {
+        filter: "*.glsl;*.glslv;*.glslf;*.vsh;*.fsh;*.vert;*.frag"
+    }
+
+    Files {
+        filter: "*.qsb"
+    }
+
+    Files {
+        filter: "*.json"
+    }
+
+    Files {
+        filter: "*.mesh"
+        directory: "Generated"
+    }
+
+    Files {
+        filter: "*.qad"
+        directory: "Generated"
+    }
+
+    Environment {
+        QT_QUICK_CONTROLS_CONF: "qtquickcontrols2.conf"
+        QML_COMPAT_RESOLVE_URLS_ON_ASSIGNMENT: "1"
+        QT_LOGGING_RULES: "qt.qml.connections=false"
+        QT_ENABLE_HIGHDPI_SCALING: "0"
+        /* Useful for debugging
+       QSG_VISUALIZE=batches
+       QSG_VISUALIZE=clip
+       QSG_VISUALIZE=changes
+       QSG_VISUALIZE=overdraw
+       */
+    }
+
+    qt6Project: true
+
+    /* List of plugin directories passed to QML runtime */
+    importPaths: [ ".", "DiplomaContent/UI_Elements", "DiplomaContent/UI_Effects", "DiplomaContent/Pages", "DiplomaContent/Navigation", "DiplomaContent/Presenters", "DiplomaContent/Models", "DiplomaContent/Components", "DiplomaContent/Services"]
+
+    /* Required for deployment */
+    targetDirectory: "/opt/Diploma"
+
+
+    qdsVersion: "4.7"
+
+    quickVersion: "6.7"
+
+    /* If any modules the project imports require widgets (e.g. QtCharts), widgetApp must be true */
+    widgetApp: true
+
+    /* args: Specifies command line arguments for qsb tool to generate shaders.
+       files: Specifies target files for qsb tool. If path is included, it must be relative to this file.
+              Wildcard '*' can be used in the file name part of the path.
+              e.g. files: [ "DiplomaContent/shaders/*.vert", "*.frag" ]  */
+    ShaderTool {
+        args: "-s --glsl \"100 es,120,150\" --hlsl 50 --msl 12"
+        files: [ "DiplomaContent/shaders/*" ]
+    }
+
+    multilanguageSupport: true
+    supportedLanguages: ["en"]
+    primaryLanguage: "en"
+
+}

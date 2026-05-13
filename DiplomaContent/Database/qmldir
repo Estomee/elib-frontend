@@ -1,0 +1,4 @@
+module DiplomaContent.Database
+# C++ singleton зарегистрирован через qt_add_qml_module в CMakeLists.txt
+# Этот qmldir нужен Qt Design Studio для обнаружения модуля в дереве исходников.
+# Фактическая регистрация типов выполняется при сборке CMake-проектом.

@@ -1,0 +1,2 @@
+module Navigation
+singleton NavigationModule 1.0 NavigationModule.qml

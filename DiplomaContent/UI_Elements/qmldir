@@ -1,0 +1,10 @@
+module DiplomaContent.UI_Elements
+MainButton 1.0 MainButton.qml
+HeadingText 1.0 HeadingText.qml
+MainTextField 1.0 MainTextField.qml
+MainSwitch 1.0 MainSwitch.qml
+MainCheckbox 1.0 MainCheckbox.qml
+MainComboBox 1.0 MainComboBox.qml
+BookCard 1.0 BookCard.qml
+NotificationToast 1.0 NotificationToast.qml
+PageLoader 1.0 PageLoader.qml

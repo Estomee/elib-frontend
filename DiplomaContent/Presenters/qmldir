@@ -1,0 +1,15 @@
+module DiplomaContent.Presenters
+WelcomePresenter 1.0 WelcomePresenter.qml
+LoginPresenter 1.0 LoginPresenter.qml
+RecoverPassPresenter 1.0 RecoverPassPresenter.qml
+MainPresenter 1.0 MainPresenter.qml
+CatalogPresenter 1.0 CatalogPresenter.qml
+MyLibraryPresenter 1.0 MyLibraryPresenter.qml
+ReaderPresenter 1.0 ReaderPresenter.qml
+ProfilePresenter 1.0 ProfilePresenter.qml
+ManageBooksPresenter 1.0 ManageBooksPresenter.qml
+ManageUsersPresenter 1.0 ManageUsersPresenter.qml
+UploadBooksPresenter 1.0 UploadBooksPresenter.qml
+SystemLogsPresenter 1.0 SystemLogsPresenter.qml
+ManageEmployeesPresenter 1.0 ManageEmployeesPresenter.qml
+ManageReferencePresenter 1.0 ManageReferencePresenter.qml
