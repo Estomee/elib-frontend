@@ -28,9 +28,6 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    // Создаём синглтоны с parent = &engine (освобождаются вместе с движком).
-    // create()-фабрики QML_SINGLETON вернут эти же объекты при первом
-    // обращении из QML.
     new AppSettings(&engine);
     new TokenManager(&engine);
     new GraphQLClient(&engine);  // инициализирует m_jsEngine из parent до загрузки QML
@@ -38,10 +35,6 @@ int main(int argc, char *argv[])
     // Бинарная директория содержит сгенерированные qmldir для C++ модулей
     engine.addImportPath(QStringLiteral(DIPLOMA_BUILD_DIR));
 
-    // Qt QML-плагины (в т.ч. QtWebEngineQuick).
-    // Qt 6 CMake встраивает qt.conf в ресурс exe и перенаправляет QmlImportsPath
-    // на папку сборки — системные модули туда не копируются.
-    // Добавляем реальный путь Qt из compile-definition, вычисленного CMake.
     engine.addImportPath(QLibraryInfo::path(QLibraryInfo::QmlImportsPath));
     engine.addImportPath(QStringLiteral(DIPLOMA_QT_QML_PATH));
 

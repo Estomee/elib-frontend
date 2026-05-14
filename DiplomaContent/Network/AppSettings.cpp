@@ -14,22 +14,11 @@ AppSettings::AppSettings(QObject *parent)
 {
     s_instance = this;
 
-    const QString envUrl = QProcessEnvironment::systemEnvironment()
-                               .value(QStringLiteral("ELIB_SERVER_URL"));
-    if (!envUrl.isEmpty()) {
-        m_serverUrl = envUrl;
-    } else {
+    {
+        const QString currentUrl = QStringLiteral("https://d5d8eram82ge8l904kte.iwzqm34r.apigw.yandexcloud.net/graphql");
         QSettings settings(QStringLiteral("ELib"), QStringLiteral("Diploma"));
-        const QString saved = settings.value(QStringLiteral("settings/server_url")).toString();
-        if (!saved.isEmpty()) {
-            m_serverUrl = saved;
-        } else {
-#ifdef QT_DEBUG
-            m_serverUrl = QStringLiteral("http://localhost:5099/graphql");
-#else
-            m_serverUrl = QStringLiteral("https://elib-server.onrender.com/graphql");
-#endif
-        }
+        settings.setValue(QStringLiteral("settings/server_url"), currentUrl);
+        m_serverUrl = currentUrl;
     }
 
     const QString envStorage = QProcessEnvironment::systemEnvironment()
